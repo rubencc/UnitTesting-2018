@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C5927E10-F6CF-4495-82B1-217777ADD2C6}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Interfaces</RootNamespace>
-    <AssemblyName>Interfaces</AssemblyName>
+    <ProjectGuid>{B0861C85-8158-4A68-AEB9-80DA1D9CF68B}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>ConsoleTest</RootNamespace>
+    <AssemblyName>ConsoleTest</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -42,23 +44,35 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="UglyLoader, Version=0.6.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ugly.Assembly.Loader.0.6.2\lib\net471\UglyLoader.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\IOrder.cs" />
-    <Compile Include="Entities\IOrderResponse.cs" />
-    <Compile Include="Entities\ITrackingInfo.cs" />
-    <Compile Include="Enums\CategoryLog.cs" />
-    <Compile Include="Enums\TrackingStatus.cs" />
-    <Compile Include="IProcessOrderWorkflow.cs" />
-    <Compile Include="Tracking\ITrackingNumberFormatter.cs" />
-    <Compile Include="Repositories\IProxyRepository.cs" />
-    <Compile Include="Tracer\ITracer.cs" />
-    <Compile Include="Tracking\ITrackingService.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\ITrackingRepository.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Implementations\Implementations.csproj">
+      <Project>{d8b8333d-59c0-4314-829e-77ea1ef7514e}</Project>
+      <Name>Implementations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Interfaces\Interfaces.csproj">
+      <Project>{c5927e10-f6cf-4495-82b1-217777add2c6}</Project>
+      <Name>Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IoC.Implementation\IoC.Implementation.csproj">
+      <Project>{0048239a-d682-4ddd-b16c-e117883f2614}</Project>
+      <Name>IoC.Implementation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IoC.Interfaces\IoC.Interfaces.csproj">
+      <Project>{2e8b426e-69d2-47a5-9d95-d4eaa63e7126}</Project>
+      <Name>IoC.Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
