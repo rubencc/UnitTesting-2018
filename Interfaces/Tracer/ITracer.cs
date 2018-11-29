@@ -1,7 +1,9 @@
-﻿namespace Interfaces
+﻿using System;
+
+namespace Interfaces
 {
-    public interface ITracer
+    public interface ITracer : IDisposable
     {
-        void Log(string message, string category);
+        void Log(string message, int category);
     }
 }

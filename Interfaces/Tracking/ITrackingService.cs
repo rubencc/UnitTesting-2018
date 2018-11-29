@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Interfaces
 {
-    public interface ITrackingService
+    public interface ITrackingService : IDisposable
     {
-        ITrackingInfo CreateTrackingInfo(Guid orderId, string postalCode, string address);
+        Task<ITrackingInfo> CreateTrackingInfoAsync(Guid orderId, string postalCode, string address, string name);
+        Task CancelTrackingAsync(Guid orderId);
     }
 }

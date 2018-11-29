@@ -1,8 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Interfaces
 {
-    public interface IProxyRepository
+    public interface IProxyRepository : IDisposable
     {
         Task<IOrderResponse> AddResponseAsync(IOrderResponse response);
     }

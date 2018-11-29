@@ -93,6 +93,10 @@
       <Project>{c5927e10-f6cf-4495-82b1-217777add2c6}</Project>
       <Name>Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IoC.Interfaces\IoC.Interfaces.csproj">
+      <Project>{2e8b426e-69d2-47a5-9d95-d4eaa63e7126}</Project>
+      <Name>IoC.Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
