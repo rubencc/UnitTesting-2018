@@ -13,6 +13,9 @@ namespace Implementations
             container.RegisterType<Order>().As<IOrder>();
             container.RegisterType<TrackingInfo>().As<ITrackingInfo>();
             
+
+            container.RegisterType<HashProvider>().As<IHashProvider>();
+            container.RegisterType<HashCalculator>().As<IHashCalculator>();
         }
     }
 }

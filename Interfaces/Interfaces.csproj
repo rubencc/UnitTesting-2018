@@ -49,6 +49,8 @@
     <Compile Include="Entities\ITrackingInfo.cs" />
     <Compile Include="Enums\CategoryLog.cs" />
     <Compile Include="Enums\TrackingStatus.cs" />
+    <Compile Include="Hash\IHashCalculator.cs" />
+    <Compile Include="Hash\IHashProvider.cs" />
     <Compile Include="IProcessOrderWorkflow.cs" />
     <Compile Include="Tracking\ITrackingNumberFormatter.cs" />
     <Compile Include="Repositories\IProxyRepository.cs" />

@@ -47,6 +47,8 @@
     <Compile Include="Entities\Order.cs" />
     <Compile Include="Entities\OrderResponse.cs" />
     <Compile Include="Entities\TrackingInfo.cs" />
+    <Compile Include="Hash\HashCalculator.cs" />
+    <Compile Include="Hash\HashProvider.cs" />
     <Compile Include="IoC\Initialization.cs" />
     <Compile Include="ProcessOrderWorkflow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
