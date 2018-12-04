@@ -50,12 +50,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="TASuite.Commons.Crosscutting, Version=0.25.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TASuite.Commons.Crosscutting.0.25.0\lib\net46\TASuite.Commons.Crosscutting.dll</HintPath>
-    </Reference>
-    <Reference Include="TASuite.Commons.Crosscutting.AutofacImp, Version=0.25.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TASuite.Commons.Crosscutting.AutofacImp.0.25.0\lib\net46\TASuite.Commons.Crosscutting.AutofacImp.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Factory\IFactory.cs" />
