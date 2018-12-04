@@ -22,6 +22,8 @@ namespace Implementations
 
         public async Task ProcessOrderAsync(IOrder order)
         {
+            if (order == null) throw new ArgumentNullException(nameof(order));
+
             try
             {
                 ITrackingInfo trackingInfo = await this.trackingService.CreateTrackingInfoAsync(order.Id, order.PostalCode, order.Address, order.Name)
@@ -60,7 +62,6 @@ namespace Implementations
 
         private void Dispose(bool disposing)
         {
-
             if (disposing)
             {
                 this.factory?.Dispose();
