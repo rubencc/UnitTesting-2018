@@ -10,14 +10,13 @@ namespace Implementation.Unit.Tests
     public class HashCalculatorTests
     {
 
-        [Fact(DisplayName = "Calculate hash MD5")]
-        public void Calculate_Hash_MD5()
+        [Theory(DisplayName = "Calculate hash MD5"),
+        InlineData("string to hash","6825270045572556"),
+        InlineData("12","2047697759270996710")]
+        public void Calculate_Hash_MD5(string input, string expected)
         {
             HashProvider hashProvider = new HashProvider();
-            HashCalculator hashCalculator = new HashCalculator(hashProvider); 
-
-            string expected = "6825270045572556";
-            string input = "string to hash";
+            HashCalculator hashCalculator = new HashCalculator(hashProvider);
 
             string result = hashCalculator.Hash(input);
 
