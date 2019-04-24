@@ -52,6 +52,7 @@
     <Compile Include="Hash\IHashCalculator.cs" />
     <Compile Include="Hash\IHashProvider.cs" />
     <Compile Include="IProcessOrderWorkflow.cs" />
+    <Compile Include="Mappers\IOrderResponseMapper.cs" />
     <Compile Include="Tracking\ITrackingNumberFormatter.cs" />
     <Compile Include="Repositories\IProxyRepository.cs" />
     <Compile Include="Tracer\ITracer.cs" />

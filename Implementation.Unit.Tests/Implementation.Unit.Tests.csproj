@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HashCalculatorTests.cs" />
+    <Compile Include="OrderResponseMapperTests.cs" />
     <Compile Include="ProcessOrderWorkflowTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

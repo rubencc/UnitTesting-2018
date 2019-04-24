@@ -50,6 +50,7 @@
     <Compile Include="Hash\HashCalculator.cs" />
     <Compile Include="Hash\HashProvider.cs" />
     <Compile Include="IoC\Initialization.cs" />
+    <Compile Include="Mappers\OrderResponseMapper.cs" />
     <Compile Include="ProcessOrderWorkflow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

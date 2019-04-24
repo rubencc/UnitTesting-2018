@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Implementations;
 using Interfaces;
-using IoC.Interfaces;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using Xunit;
@@ -17,16 +16,16 @@ namespace Implementation.Unit.Tests
         private ITracer tracer;
         private ITrackingService trackingService;
         private IProxyRepository proxyRepository;
-        private IFactory factory;
+        private IOrderResponseMapper mapper;
 
         public ProcessOrderWorkflowTests()
         {
             this.tracer = Substitute.For<ITracer>();
             this.trackingService = Substitute.For<ITrackingService>();
             this.proxyRepository = Substitute.For<IProxyRepository>();
-            this.factory = Substitute.For<IFactory>();
+            this.mapper = Substitute.For<IOrderResponseMapper>();
 
-            this.workflow = new ProcessOrderWorkflow(this.tracer, this.trackingService, this.proxyRepository, this.factory);
+            this.workflow = new ProcessOrderWorkflow(this.tracer, this.trackingService, this.proxyRepository, this.mapper);
         }
 
         ~ProcessOrderWorkflowTests()
@@ -35,14 +34,14 @@ namespace Implementation.Unit.Tests
             this.tracer = null;
             this.trackingService = null;
             this.proxyRepository = null;
-            this.factory = null;
+            this.mapper = null;
         }
 
         [Fact(DisplayName = "Inject tracer null reference")]
         public void Inject_tracer_null_tracert_reference()
         {
             var exception =
-                Record.Exception(() => new ProcessOrderWorkflow(null, this.trackingService, this.proxyRepository, this.factory));
+                Record.Exception(() => new ProcessOrderWorkflow(null, this.trackingService, this.proxyRepository, this.mapper));
 
             exception.Should().BeOfType<ArgumentNullException>();
         }
@@ -51,7 +50,7 @@ namespace Implementation.Unit.Tests
         public void Inject_tracer_null_tracking_reference()
         {
             var exception =
-                Record.Exception(() => new ProcessOrderWorkflow(this.tracer, null, this.proxyRepository, this.factory));
+                Record.Exception(() => new ProcessOrderWorkflow(this.tracer, null, this.proxyRepository, this.mapper));
 
             exception.Should().BeOfType<ArgumentNullException>();
         }
@@ -60,13 +59,13 @@ namespace Implementation.Unit.Tests
         public void Inject_tracer_null_proxy_reference()
         {
             var exception =
-                Record.Exception(() => new ProcessOrderWorkflow(this.tracer, this.trackingService, null, this.factory));
+                Record.Exception(() => new ProcessOrderWorkflow(this.tracer, this.trackingService, null, this.mapper));
 
             exception.Should().BeOfType<ArgumentNullException>();
         }
 
         [Fact(DisplayName = "Inject factory null reference")]
-        public void Inject_tracer_null_factory_reference()
+        public void Inject_tracer_null_mapper_reference()
         {
             var exception =
                 Record.Exception(() => new ProcessOrderWorkflow(this.tracer, this.trackingService, this.proxyRepository, null));
@@ -88,7 +87,7 @@ namespace Implementation.Unit.Tests
             await this.trackingService
                 .CreateTrackingInfoAsync(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
                 .ConfigureAwait(false);
-            this.factory.Received(1).Resolve<IOrderResponse>();
+            this.mapper.Received(1).MapFrom(order, Arg.Any<ITrackingInfo>());
             await this.proxyRepository.Received(1).AddResponseAsync(Arg.Any<IOrderResponse>()).ConfigureAwait(false);
         }
 
@@ -107,39 +106,38 @@ namespace Implementation.Unit.Tests
             await this.trackingService.Received(1)
                 .CreateTrackingInfoAsync(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
                 .ConfigureAwait(false);
-            this.factory.Received(8).Resolve<IOrderResponse>();
+            this.mapper.Received(0).MapFrom(order, Arg.Any<ITrackingInfo>());
             await this.proxyRepository.Received(0).AddResponseAsync(Arg.Any<IOrderResponse>()).ConfigureAwait(false);
             await this.trackingService.Received(1).CancelTrackingAsync(Arg.Any<Guid>()).ConfigureAwait(false);
         }
 
-        [Fact(DisplayName = "Validate map")]
-        public async Task Validate_Map()
-        {
-            IOrder order = new Order()
-            {
-                Id = Guid.NewGuid(),
-                Address = "address",
-                Name = "name",
-                NumberOfItems = 10,
-                PostalCode = "postalcode",
-                Sku = "sku"
-            };
+        //Refacor -> Pasa a estar en una dependencia.
+        //[Fact(DisplayName = "Validate map")]
+        //public async Task Validate_Map()
+        //{
+        //    IOrder order = new Order()
+        //    {
+        //        Id = Guid.NewGuid(),
+        //        Address = "address",
+        //        Name = "name",
+        //        NumberOfItems = 10,
+        //        PostalCode = "postalcode",
+        //        Sku = "sku"
+        //    };
 
-            IOrderResponse response = new OrderResponse();
+        //    IOrderResponse response = new OrderResponse();
 
-            this.factory.Resolve<IOrderResponse>().Returns(x => response);
+        //    this.factory.Resolve<IOrderResponse>().Returns(x => response);
 
-            await this.workflow.ProcessOrderAsync(order).ConfigureAwait(false);
+        //    await this.workflow.ProcessOrderAsync(order).ConfigureAwait(false);
 
-            response.Id.Should().NotBeEmpty();
-            response.Address.Should().Be(order.Address);
-            response.Name.Should().Be(order.Name);
-            response.NumberOfItems.Should().Be(order.NumberOfItems);
-            response.OrderId.Should().Be(order.Id);
-            response.PostalCode.Should().Be(order.PostalCode);
-            response.Sku.Should().Be(order.Sku);
-
-
-        }
+        //    response.Id.Should().NotBeEmpty();
+        //    response.Address.Should().Be(order.Address);
+        //    response.Name.Should().Be(order.Name);
+        //    response.NumberOfItems.Should().Be(order.NumberOfItems);
+        //    response.OrderId.Should().Be(order.Id);
+        //    response.PostalCode.Should().Be(order.PostalCode);
+        //    response.Sku.Should().Be(order.Sku);
+        //}
     }
 }

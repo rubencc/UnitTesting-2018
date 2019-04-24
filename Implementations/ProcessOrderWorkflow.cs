@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Interfaces;
-using IoC.Interfaces;
 
 namespace Implementations
 {
@@ -10,14 +9,14 @@ namespace Implementations
         private readonly ITracer tracer;
         private readonly ITrackingService trackingService;
         private readonly IProxyRepository proxyRepository;
-        private readonly IFactory factory;
+        private readonly IOrderResponseMapper mapper;
 
-        public ProcessOrderWorkflow(ITracer tracer, ITrackingService trackingService, IProxyRepository proxyRepository, IFactory factory)
+        public ProcessOrderWorkflow(ITracer tracer, ITrackingService trackingService, IProxyRepository proxyRepository, IOrderResponseMapper mapper)
         {
             this.tracer = tracer ?? throw new ArgumentNullException(nameof(tracer));
             this.trackingService = trackingService ?? throw new ArgumentNullException(nameof(trackingService));
             this.proxyRepository = proxyRepository ?? throw new ArgumentNullException(nameof(proxyRepository));
-            this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task ProcessOrderAsync(IOrder order)
@@ -27,7 +26,7 @@ namespace Implementations
                 ITrackingInfo trackingInfo = await this.trackingService.CreateTrackingInfoAsync(order.Id, order.PostalCode, order.Address, order.Name)
                     .ConfigureAwait(false);
 
-                IOrderResponse response = this.GetOrderResponse(order, trackingInfo);
+                IOrderResponse response = this.mapper.MapFrom(order, trackingInfo);
 
                 await this.proxyRepository.AddResponseAsync(response).ConfigureAwait(false);
 
@@ -43,27 +42,14 @@ namespace Implementations
             }
         }
 
-        private IOrderResponse GetOrderResponse(IOrder order, ITrackingInfo trackingInfo)
-        {
-            IOrderResponse response = this.factory.Resolve<IOrderResponse>();
 
-            response.Id = Guid.NewGuid();
-            response.OrderId = order.Id;
-            response.TrackingInfo = trackingInfo;
-            response.Address = order.Address;
-            response.PostalCode = order.PostalCode;
-            response.Name = order.Name;
-            response.NumberOfItems = order.NumberOfItems;
-            response.Sku = order.Sku;
-            return response;
-        }
 
         private void Dispose(bool disposing)
         {
 
             if (disposing)
             {
-                this.factory?.Dispose();
+                this.mapper?.Dispose();
                 this.trackingService?.Dispose();
                 this.proxyRepository?.Dispose();
                 this.tracer?.Dispose();
